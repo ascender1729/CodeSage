@@ -3,7 +3,7 @@ import os
 import argparse
 import yaml
 import json
-from mccabe import McCabeChecker
+from mccabe import PathGraphingAstVisitor
 from jinja2 import Template
 import coverage
 
@@ -61,13 +61,14 @@ class CodeSage:
 
     def check_complexity(self, tree, filename):
         max_complexity = self.config.get('max_complexity', 10)
-        checker = McCabeChecker(max_complexity)
-        for lineno, offset, text, check in checker.run():
-            if 'is too complex' in text:
+        visitor = PathGraphingAstVisitor()
+        visitor.preorder(tree, visitor)
+        for graph in visitor.graphs.values():
+            if graph.complexity() > max_complexity:
                 self.issues.append({
                     "type": "complexity",
-                    "message": text,
-                    "line": lineno
+                    "message": f"Function '{graph.entity}' is too complex (complexity: {graph.complexity()})",
+                    "line": graph.lineno
                 })
 
     def check_docstrings(self, tree):
@@ -77,10 +78,16 @@ class CodeSage:
             if isinstance(node, (ast.FunctionDef, ast.ClassDef, ast.Module)):
                 if not ast.get_docstring(node):
                     node_type = type(node).__name__.lower().replace('def', '')
+                    if isinstance(node, ast.Module):
+                        line_num = 1
+                        name = 'module'
+                    else:
+                        line_num = node.lineno
+                        name = node.name
                     self.issues.append({
                         "type": "missing_docstring",
-                        "message": f"{node_type.capitalize()} '{node.name if hasattr(node, 'name') else 'module'}' is missing a docstring.",
-                        "line": node.lineno
+                        "message": f"{node_type.capitalize()} '{name}' is missing a docstring.",
+                        "line": line_num
                     })
 
 def check_test_coverage(path):
