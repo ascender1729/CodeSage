@@ -7,6 +7,7 @@ CodeSage is an intelligent code review assistant designed to enhance the softwar
 - Function length check
 - Variable naming convention check
 - Import style check
+- Command-line interface for easy use
 
 ## Installation
 
@@ -21,10 +22,38 @@ CodeSage is an intelligent code review assistant designed to enhance the softwar
 
 ## Usage
 
-Run the main script:
+You can run CodeSage from the command line:
 
 ```
-python src/main.py
+python src/main.py [path] [-c CONFIG]
+```
+
+Arguments:
+- `path`: Path to the file or directory to analyze (required)
+- `-c CONFIG`, `--config CONFIG`: Path to the configuration file (optional, defaults to 'config.yaml')
+
+Examples:
+1. Analyze a single file:
+   ```
+   python src/main.py path/to/your/file.py
+   ```
+2. Analyze an entire directory:
+   ```
+   python src/main.py path/to/your/project/
+   ```
+3. Use a custom configuration file:
+   ```
+   python src/main.py path/to/your/project/ -c path/to/custom_config.yaml
+   ```
+
+## Configuration
+
+You can modify the `config.yaml` file to adjust the behavior of CodeSage. The default configuration is:
+
+```yaml
+max_function_length: 20
+check_variable_naming: true
+check_import_style: true
 ```
 
 ## Running Tests
@@ -34,10 +63,6 @@ To run the unit tests:
 ```
 python -m unittest discover tests
 ```
-
-## Configuration
-
-You can modify the `config.yaml` file to adjust the behavior of CodeSage.
 
 ## Contributing
 
