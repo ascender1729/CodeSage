@@ -11,6 +11,8 @@ class CodeSage:
         
         tree = ast.parse(content)
         self.check_function_length(tree)
+        self.check_variable_naming(tree)
+        self.check_import_style(tree)
         
         return self.issues
 
@@ -19,6 +21,17 @@ class CodeSage:
             if isinstance(node, ast.FunctionDef):
                 if len(node.body) > 20:
                     self.issues.append(f"Function '{node.name}' is too long ({len(node.body)} lines). Consider breaking it down.")
+
+    def check_variable_naming(self, tree):
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Name) and not node.id.islower():
+                self.issues.append(f"Variable '{node.id}' should be in lowercase with words separated by underscores.")
+
+    def check_import_style(self, tree):
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import) or isinstance(node, ast.ImportFrom):
+                if any('*' in alias.name for alias in node.names):
+                    self.issues.append(f"Avoid using 'from module import *'. It's better to import specific names.")
 
 def main():
     sage = CodeSage()
