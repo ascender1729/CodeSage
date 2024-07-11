@@ -4,8 +4,6 @@ import argparse
 import yaml
 import json
 from mccabe import PathGraphingAstVisitor
-from jinja2 import Template
-import coverage
 
 class CodeSage:
     def __init__(self, config):
@@ -90,70 +88,9 @@ class CodeSage:
                         "line": line_num
                     })
 
-def check_test_coverage(path):
-    cov = coverage.Coverage()
-    cov.start()
-
-    # Run the tests
-    import unittest
-    test_loader = unittest.TestLoader()
-    test_suite = test_loader.discover(path)
-    test_runner = unittest.TextTestRunner()
-    test_runner.run(test_suite)
-
-    cov.stop()
-    cov.save()
-
-    total_coverage = cov.report()
-    return total_coverage
-
 def load_config(config_path):
     with open(config_path, 'r') as f:
         return yaml.safe_load(f)
-
-def generate_html_report(results):
-    template = Template('''
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CodeSage Report</title>
-        <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; }
-            h1 { color: #2c3e50; }
-            .file { margin-bottom: 20px; border: 1px solid #ddd; padding: 10px; border-radius: 5px; }
-            .file h2 { margin-top: 0; color: #34495e; }
-            .issue { margin-bottom: 10px; }
-            .issue-type { font-weight: bold; color: #e74c3c; }
-        </style>
-    </head>
-    <body>
-        <h1>CodeSage Report</h1>
-        {% for file, issues in results.items() %}
-        <div class="file">
-            <h2>{{ file }}</h2>
-            {% if issues %}
-                {% for issue in issues %}
-                <div class="issue">
-                    <span class="issue-type">[{{ issue.type }}]</span> Line {{ issue.line }}: {{ issue.message }}
-                </div>
-                {% endfor %}
-            {% else %}
-                <p>No issues found.</p>
-            {% endif %}
-        </div>
-        {% endfor %}
-        {% if results.test_coverage %}
-        <div class="file">
-            <h2>Test Coverage</h2>
-            <p>Overall test coverage: {{ results.test_coverage }}</p>
-        </div>
-        {% endif %}
-    </body>
-    </html>
-    ''')
-    return template.render(results=results)
 
 def main():
     parser = argparse.ArgumentParser(description="CodeSage: A Code Review Assistant")
@@ -164,6 +101,7 @@ def main():
     parser.add_argument('--check-coverage', action='store_true', help="Check test coverage")
     args = parser.parse_args()
 
+    # ... rest of the main function ...
     config = load_config(args.config)
     sage = CodeSage(config)
 
@@ -177,35 +115,17 @@ def main():
         issues = sage.analyze_file(file_path)
         results[file_path] = issues
 
-    if args.check_coverage:
-        coverage = check_test_coverage(args.path)
-        results['test_coverage'] = f"{coverage:.2f}%"
-
     if args.format == 'text':
         for file_path, issues in results.items():
-            if file_path == 'test_coverage':
-                print(f"Test coverage: {issues}")
+            print(f"Issues in {file_path}:")
+            if issues:
+                for issue in issues:
+                    print(f"- Line {issue['line']}: [{issue['type']}] {issue['message']}")
             else:
-                print(f"Issues in {file_path}:")
-                if issues:
-                    for issue in issues:
-                        print(f"- Line {issue['line']}: [{issue['type']}] {issue['message']}")
-                else:
-                    print("No issues found.")
+                print("No issues found.")
             print()
     elif args.format == 'json':
-        if args.output:
-            with open(args.output, 'w') as f:
-                json.dump(results, f, indent=2)
-        else:
-            print(json.dumps(results, indent=2))
-    elif args.format == 'html':
-        html_report = generate_html_report(results)
-        if args.output:
-            with open(args.output, 'w') as f:
-                f.write(html_report)
-        else:
-            print(html_report)
+        print(json.dumps(results, indent=2))
 
 if __name__ == "__main__":
     main()

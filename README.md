@@ -1,6 +1,6 @@
 # CodeSage
 
-CodeSage is an intelligent code review assistant designed to enhance the software development process. It provides automated insights, best practice suggestions, and helps maintain code quality across projects.
+CodeSage is an advanced code review assistant designed to enhance the software development process. It provides automated insights, best practice suggestions, and helps maintain code quality across projects.
 
 ## Features
 
@@ -9,8 +9,12 @@ CodeSage is an intelligent code review assistant designed to enhance the softwar
 - Import style check
 - Complexity check using McCabe metric
 - Docstring presence check
+- Line length check
+- Class and function naming convention check
 - Test coverage analysis
+- Parallel processing for faster analysis
 - Command-line interface for easy use
+- Web interface for user-friendly interaction
 - Multiple output formats (text, JSON, HTML)
 - Git integration for automated pull request analysis
 
@@ -20,7 +24,11 @@ CodeSage is an intelligent code review assistant designed to enhance the softwar
    ```
    git clone https://github.com/ascender1729/CodeSage.git
    ```
-2. Install the required dependencies:
+2. Navigate to the project directory:
+   ```
+   cd CodeSage
+   ```
+3. Install the required dependencies:
    ```
    pip install -r requirements.txt
    ```
@@ -56,6 +64,16 @@ Examples:
    python src/main.py path/to/your/project/ -c path/to/custom_config.yaml -f html -o report.html
    ```
 
+### Web Interface Usage
+
+To run the web interface:
+
+```
+python src/web_interface.py
+```
+
+Then open a web browser and navigate to `http://localhost:5000`.
+
 ### Git Integration
 
 To use CodeSage for automated pull request analysis, you need to set up the following environment variables:
@@ -86,6 +104,7 @@ check_import_style: true
 max_complexity: 10
 check_docstrings: true
 min_test_coverage: 80
+max_line_length: 79
 ```
 
 ## Running Tests
@@ -112,7 +131,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - [@the_complex_one](https://x.com/the_complex_one) - pavankumard.pg19.ma@nitp.ac.in
+Pavan Kumar - [@the_complex_one](https://x.com/the_complex_one) - pavankumard.pg19.ma@nitp.ac.in
 
 Project Link: [https://github.com/ascender1729/CodeSage](https://github.com/ascender1729/CodeSage)
 
@@ -123,3 +142,4 @@ Project Link: [https://github.com/ascender1729/CodeSage](https://github.com/asce
 - [Jinja2](https://jinja.palletsprojects.com/)
 - [PyGithub](https://github.com/PyGithub/PyGithub)
 - [Coverage.py](https://coverage.readthedocs.io/)
+- [Flask](https://flask.palletsprojects.com/)

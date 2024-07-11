@@ -4,14 +4,16 @@ from src.main import CodeSage
 
 class TestCodeSage(unittest.TestCase):
     def setUp(self):
-        self.sage = CodeSage({
+        config = {
             'max_function_length': 20,
             'check_variable_naming': True,
             'check_import_style': True,
             'max_complexity': 10,
             'check_docstrings': True
-        })
+        }
+        self.sage = CodeSage(config)
 
+    # ... rest of the test methods ...
     def test_check_function_length(self):
         code = """
 def long_function():
