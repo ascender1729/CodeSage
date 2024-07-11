@@ -112,7 +112,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_twitter) - email@example.com
+Your Name - [@the_complex_one](https://x.com/the_complex_one) - pavankumard.pg19.ma@nitp.ac.in
 
 Project Link: [https://github.com/ascender1729/CodeSage](https://github.com/ascender1729/CodeSage)
 
