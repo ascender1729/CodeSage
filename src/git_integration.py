@@ -1,7 +1,7 @@
 import os
 import subprocess
 from github import Github
-from main import CodeSage, load_config
+from .main import CodeSage, load_config
 
 def get_changed_files(base_branch, head_branch):
     """Get the list of changed files between two branches."""
