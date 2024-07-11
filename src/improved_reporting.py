@@ -3,7 +3,9 @@ from jinja2 import Template
 def generate_detailed_report(results):
     # Group issues by type
     grouped_issues = {}
+    total_issues = 0
     for file, issues in results.items():
+        total_issues += len(issues)
         for issue in issues:
             if issue['type'] not in grouped_issues:
                 grouped_issues[issue['type']] = []
@@ -41,9 +43,9 @@ def generate_detailed_report(results):
         </div>
         {% endfor %}
         <div class="summary">
-            <p>Total issues found: {{ results | sum(attribute='__len__') }}</p>
+            <p>Total issues found: {{ total_issues }}</p>
         </div>
     </body>
     </html>
     ''')
-    return template.render(grouped_issues=grouped_issues, results=results)
+    return template.render(grouped_issues=grouped_issues, total_issues=total_issues)
