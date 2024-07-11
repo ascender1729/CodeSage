@@ -58,7 +58,22 @@ Examples:
 
 ### Git Integration
 
-(Git integration instructions remain the same as in the previous README)
+To use CodeSage for automated pull request analysis, you need to set up the following environment variables:
+
+- `REPO_PATH`: Path to the local repository
+- `BASE_BRANCH`: Base branch of the pull request (default is 'main')
+- `HEAD_BRANCH`: Head branch of the pull request
+- `GITHUB_TOKEN`: Your GitHub personal access token
+- `REPO_NAME`: Name of the repository in the format 'owner/repo'
+- `PR_NUMBER`: Number of the pull request
+
+Then run:
+
+```
+python src/git_integration.py
+```
+
+This will analyze the changes in the pull request and post the results as a comment on the pull request.
 
 ## Configuration
 
@@ -84,3 +99,27 @@ python -m unittest discover tests
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Contact
+
+Your Name - [@your_twitter](https://twitter.com/your_twitter) - email@example.com
+
+Project Link: [https://github.com/ascender1729/CodeSage](https://github.com/ascender1729/CodeSage)
+
+## Acknowledgements
+
+- [Python AST](https://docs.python.org/3/library/ast.html)
+- [McCabe complexity](https://github.com/PyCQA/mccabe)
+- [Jinja2](https://jinja.palletsprojects.com/)
+- [PyGithub](https://github.com/PyGithub/PyGithub)
+- [Coverage.py](https://coverage.readthedocs.io/)
