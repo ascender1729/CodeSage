@@ -2,3 +2,5 @@ max_function_length: 20
 check_variable_naming: true
 check_import_style: true
 max_complexity: 10
+check_docstrings: true
+min_test_coverage: 80

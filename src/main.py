@@ -5,6 +5,7 @@ import yaml
 import json
 from mccabe import McCabeChecker
 from jinja2 import Template
+import coverage
 
 class CodeSage:
     def __init__(self, config):
@@ -20,6 +21,7 @@ class CodeSage:
         self.check_variable_naming(tree)
         self.check_import_style(tree)
         self.check_complexity(tree, file_path)
+        self.check_docstrings(tree)
         
         return self.issues
 
@@ -68,6 +70,36 @@ class CodeSage:
                     "line": lineno
                 })
 
+    def check_docstrings(self, tree):
+        if not self.config.get('check_docstrings', True):
+            return
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.ClassDef, ast.Module)):
+                if not ast.get_docstring(node):
+                    node_type = type(node).__name__.lower().replace('def', '')
+                    self.issues.append({
+                        "type": "missing_docstring",
+                        "message": f"{node_type.capitalize()} '{node.name if hasattr(node, 'name') else 'module'}' is missing a docstring.",
+                        "line": node.lineno
+                    })
+
+def check_test_coverage(path):
+    cov = coverage.Coverage()
+    cov.start()
+
+    # Run the tests
+    import unittest
+    test_loader = unittest.TestLoader()
+    test_suite = test_loader.discover(path)
+    test_runner = unittest.TextTestRunner()
+    test_runner.run(test_suite)
+
+    cov.stop()
+    cov.save()
+
+    total_coverage = cov.report()
+    return total_coverage
+
 def load_config(config_path):
     with open(config_path, 'r') as f:
         return yaml.safe_load(f)
@@ -105,6 +137,12 @@ def generate_html_report(results):
             {% endif %}
         </div>
         {% endfor %}
+        {% if results.test_coverage %}
+        <div class="file">
+            <h2>Test Coverage</h2>
+            <p>Overall test coverage: {{ results.test_coverage }}</p>
+        </div>
+        {% endif %}
     </body>
     </html>
     ''')
@@ -116,6 +154,7 @@ def main():
     parser.add_argument('-c', '--config', default='config.yaml', help="Path to the configuration file")
     parser.add_argument('-f', '--format', choices=['text', 'json', 'html'], default='text', help="Output format")
     parser.add_argument('-o', '--output', help="Output file for JSON or HTML format")
+    parser.add_argument('--check-coverage', action='store_true', help="Check test coverage")
     args = parser.parse_args()
 
     config = load_config(args.config)
@@ -131,14 +170,21 @@ def main():
         issues = sage.analyze_file(file_path)
         results[file_path] = issues
 
+    if args.check_coverage:
+        coverage = check_test_coverage(args.path)
+        results['test_coverage'] = f"{coverage:.2f}%"
+
     if args.format == 'text':
         for file_path, issues in results.items():
-            print(f"Issues in {file_path}:")
-            if issues:
-                for issue in issues:
-                    print(f"- Line {issue['line']}: [{issue['type']}] {issue['message']}")
+            if file_path == 'test_coverage':
+                print(f"Test coverage: {issues}")
             else:
-                print("No issues found.")
+                print(f"Issues in {file_path}:")
+                if issues:
+                    for issue in issues:
+                        print(f"- Line {issue['line']}: [{issue['type']}] {issue['message']}")
+                else:
+                    print("No issues found.")
             print()
     elif args.format == 'json':
         if args.output:

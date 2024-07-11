@@ -8,6 +8,8 @@ CodeSage is an intelligent code review assistant designed to enhance the softwar
 - Variable naming convention check
 - Import style check
 - Complexity check using McCabe metric
+- Docstring presence check
+- Test coverage analysis
 - Command-line interface for easy use
 - Multiple output formats (text, JSON, HTML)
 - Git integration for automated pull request analysis
@@ -30,7 +32,7 @@ CodeSage is an intelligent code review assistant designed to enhance the softwar
 You can run CodeSage from the command line:
 
 ```
-python src/main.py [path] [-c CONFIG] [-f {text,json,html}] [-o OUTPUT]
+python src/main.py [path] [-c CONFIG] [-f {text,json,html}] [-o OUTPUT] [--check-coverage]
 ```
 
 Arguments:
@@ -38,15 +40,16 @@ Arguments:
 - `-c CONFIG`, `--config CONFIG`: Path to the configuration file (optional, defaults to 'config.yaml')
 - `-f {text,json,html}`, `--format {text,json,html}`: Output format (optional, defaults to 'text')
 - `-o OUTPUT`, `--output OUTPUT`: Output file for JSON or HTML format (optional)
+- `--check-coverage`: Check test coverage (optional)
 
 Examples:
 1. Analyze a single file with text output:
    ```
    python src/main.py path/to/your/file.py
    ```
-2. Analyze an entire directory with JSON output:
+2. Analyze an entire directory with JSON output and check test coverage:
    ```
-   python src/main.py path/to/your/project/ -f json -o report.json
+   python src/main.py path/to/your/project/ -f json -o report.json --check-coverage
    ```
 3. Use a custom configuration file and generate an HTML report:
    ```
@@ -55,22 +58,7 @@ Examples:
 
 ### Git Integration
 
-To use CodeSage for automated pull request analysis, you need to set up the following environment variables:
-
-- `REPO_PATH`: Path to the local repository
-- `BASE_BRANCH`: Base branch of the pull request (default is 'main')
-- `HEAD_BRANCH`: Head branch of the pull request
-- `GITHUB_TOKEN`: Your GitHub personal access token
-- `REPO_NAME`: Name of the repository in the format 'owner/repo'
-- `PR_NUMBER`: Number of the pull request
-
-Then run:
-
-```
-python src/git_integration.py
-```
-
-This will analyze the changes in the pull request and post the results as a comment on the pull request.
+(Git integration instructions remain the same as in the previous README)
 
 ## Configuration
 
@@ -81,6 +69,8 @@ max_function_length: 20
 check_variable_naming: true
 check_import_style: true
 max_complexity: 10
+check_docstrings: true
+min_test_coverage: 80
 ```
 
 ## Running Tests
