@@ -10,6 +10,7 @@ CodeSage is an intelligent code review assistant designed to enhance the softwar
 - Complexity check using McCabe metric
 - Command-line interface for easy use
 - Multiple output formats (text, JSON, HTML)
+- Git integration for automated pull request analysis
 
 ## Installation
 
@@ -23,6 +24,8 @@ CodeSage is an intelligent code review assistant designed to enhance the softwar
    ```
 
 ## Usage
+
+### Command-line Usage
 
 You can run CodeSage from the command line:
 
@@ -49,6 +52,25 @@ Examples:
    ```
    python src/main.py path/to/your/project/ -c path/to/custom_config.yaml -f html -o report.html
    ```
+
+### Git Integration
+
+To use CodeSage for automated pull request analysis, you need to set up the following environment variables:
+
+- `REPO_PATH`: Path to the local repository
+- `BASE_BRANCH`: Base branch of the pull request (default is 'main')
+- `HEAD_BRANCH`: Head branch of the pull request
+- `GITHUB_TOKEN`: Your GitHub personal access token
+- `REPO_NAME`: Name of the repository in the format 'owner/repo'
+- `PR_NUMBER`: Number of the pull request
+
+Then run:
+
+```
+python src/git_integration.py
+```
+
+This will analyze the changes in the pull request and post the results as a comment on the pull request.
 
 ## Configuration
 
