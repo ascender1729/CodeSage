@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, jsonify, send_file
-from werkzeug.utils import secure_filename
+from flask import Flask, render_template, request, jsonify
 import os
+from werkzeug.utils import secure_filename
 from main import load_config
 from enhanced_analysis import EnhancedCodeSage
 from improved_reporting import generate_detailed_report
@@ -37,16 +37,14 @@ def analyze():
     # Generate detailed report
     report = generate_detailed_report(results)
 
-    # Save report to a file
-    report_path = 'report.html'
-    with open(report_path, 'w') as f:
-        f.write(report)
-
     # Clean up uploaded files
     for file_path in file_paths:
-        os.remove(file_path)
+        try:
+            os.remove(file_path)
+        except PermissionError:
+            print(f"Could not delete {file_path}. It will be deleted later.")
 
-    return send_file(report_path, as_attachment=True)
+    return report
 
 if __name__ == '__main__':
     os.makedirs('uploads', exist_ok=True)
