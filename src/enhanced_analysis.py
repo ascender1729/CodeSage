@@ -10,7 +10,16 @@ class EnhancedCodeSage:
         with open(file_path, 'r') as file:
             content = file.read()
         
-        tree = ast.parse(content)
+        try:
+            tree = ast.parse(content)
+        except SyntaxError as e:
+            self.issues.append({
+                "type": "syntax_error",
+                "message": f"SyntaxError: {str(e)}",
+                "line": e.lineno
+            })
+            return self.issues
+
         self.check_function_length(tree)
         self.check_variable_naming(tree)
         self.check_import_style(tree)
@@ -22,6 +31,7 @@ class EnhancedCodeSage:
         
         return self.issues
 
+    # ... (rest of the methods remain the same)
     def check_function_length(self, tree):
         max_length = self.config.get('max_function_length', 20)
         for node in ast.walk(tree):
