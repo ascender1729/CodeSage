@@ -28,7 +28,14 @@ CodeSage is an advanced code review assistant designed to enhance the software d
    ```
    cd CodeSage
    ```
-3. Install the required dependencies:
+ 3. Create and activate a virtual environment:
+
+```bash
+python -m venv myenv
+.\myenv\Scripts\Activate.ps1  # On Windows
+source myenv/bin/activate  # On Unix or MacOS
+```
+4. Install the required dependencies:
    ```
    pip install -r requirements.txt
    ```
