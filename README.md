@@ -149,3 +149,39 @@ Project Link: [https://github.com/ascender1729/CodeSage](https://github.com/asce
 - [PyGithub](https://github.com/PyGithub/PyGithub)
 - [Coverage.py](https://coverage.readthedocs.io/)
 - [Flask](https://flask.palletsprojects.com/)
+
+---
+
+## 📖 Citation
+
+If you use this project in your research or work, please cite it as:
+
+### BibTeX
+```bibtex
+@software{dubasi2024_codesage,
+  author       = {Dubasi, Pavan Kumar},
+  title        = {CodeSage: Advanced Code Review Assistant},
+  year         = {2024},
+  publisher    = {GitHub},
+  url          = {https://github.com/ascender1729/CodeSage}
+}
+```
+
+### APA Format
+Dubasi, P. K. (2024). *CodeSage: Advanced Code Review Assistant*. GitHub. https://github.com/ascender1729/CodeSage
+
+### IEEE Format
+P. K. Dubasi, "CodeSage: Advanced Code Review Assistant," GitHub, 2024. [Online]. Available: https://github.com/ascender1729/CodeSage
+
+---
+
+## 👤 Author
+
+**Pavan Kumar Dubasi**  
+Principal AI Consultant | VibeTensor
+
+- 🌐 Website: [dubasipavankumar.com](https://dubasipavankumar.com)
+- 💼 LinkedIn: [in/im-pavankumar](https://linkedin.com/in/im-pavankumar)
+- 🐦 Twitter: [@the_complex_one](https://twitter.com/the_complex_one)
+- 📧 Email: pavan.dubasi2024@gmail.com
+- 🆔 ORCID: [0009-0006-1060-4598](https://orcid.org/0009-0006-1060-4598)
